@@ -301,32 +301,6 @@ Authorization: Bearer {your_jwt_token}
 - Be a valid email format
 - Maximum 100 characters
 
-## 🐳 Useful Docker Commands
-
-```bash
-# View logs in real-time
-docker-compose -f docker-compose-dev.yml logs -f api
-
-# Stop containers
-docker-compose -f docker-compose-dev.yml down
-
-# Remove volumes (complete cleanup)
-docker-compose -f docker-compose-dev.yml down -v
-
-# Rebuild without cache
-docker-compose -f docker-compose-dev.yml build --no-cache
-````
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 👤 Author
-
-**Your Name**
-
-- GitHub: [@your-username](https://github.com/your-username)
-
 ---
 
 ⭐ If you found this project useful, please consider giving it a star on GitHub!
