@@ -283,8 +283,7 @@ Authorization: Bearer {your_jwt_token}
   "error": "Token inválido o expirado"
 }
 ```
-
-````
+-----
 
 ## 🔒 Validation Rules
 
