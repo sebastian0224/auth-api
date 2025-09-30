@@ -6,13 +6,10 @@ const router = Router();
 
 router.use(authMiddleware);
 
-// GET /api/users/profile
 router.get("/profile", getProfile);
 
-// PUT /api/users/profile
 router.put("/profile", updateProfile);
 
-// DELETE /api/users/profile
 router.delete("/profile", deleteProfile);
 
 export default router;

@@ -11,6 +11,11 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   api:
     build:
@@ -24,10 +29,12 @@ services:
       - /app/node_modules
     environment:
       - CHOKIDAR_USEPOLLING=true
+      - DB_HOST=db
     env_file:
       - .env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
 volumes:
   db_data:

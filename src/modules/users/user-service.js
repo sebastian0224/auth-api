@@ -45,7 +45,6 @@ export const updateUser = async (userId, data) => {
     WHERE id = $${paramCount}
     RETURNING id, username, email, created_at, updated_at
   `;
-  //---------------revisar
   const result = await pool.query(query, values);
 
   if (result.rows.length === 0) {

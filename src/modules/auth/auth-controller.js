@@ -1,45 +1,63 @@
 import { registerUser, loginUser } from "./auth-service.js";
+import { registerSchema, loginSchema } from "./auth-validation.js";
 
 export const register = async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
+    const validatedData = registerSchema.parse(req.body);
 
-    // Aquí irá la validación con Zod después
-    if (!username || !email || !password) {
-      return res.status(400).json({
-        error: "Todos los campos son requeridos",
-      });
-    }
-
-    const result = await registerUser(username, email, password);
+    const result = await registerUser(
+      validatedData.username,
+      validatedData.email,
+      validatedData.password
+    );
 
     res.status(201).json({
       message: "Usuario registrado exitosamente",
       data: result,
     });
   } catch (error) {
+    // Si es error de Zod
+    if (error.name === "ZodError") {
+      const errors = error.issues.map((issue) => ({
+        field: issue.path.join("."),
+        message: issue.message,
+      }));
+
+      return res.status(400).json({
+        error: "Errores de validación",
+        details: errors,
+      });
+    }
+
     next(error);
   }
 };
 
 export const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    // Validar con Zod
+    const validatedData = loginSchema.parse(req.body);
 
-    // Aquí irá la validación con Zod después
-    if (!email || !password) {
-      return res.status(400).json({
-        error: "Email y contraseña son requeridos",
-      });
-    }
-
-    const result = await loginUser(email, password);
+    const result = await loginUser(validatedData.email, validatedData.password);
 
     res.status(200).json({
       message: "Login exitoso",
       data: result,
     });
   } catch (error) {
+    // Si es error de Zod
+    if (error.name === "ZodError") {
+      const errors = error.issues.map((issue) => ({
+        field: issue.path.join("."),
+        message: issue.message,
+      }));
+
+      return res.status(400).json({
+        error: "Errores de validación",
+        details: errors,
+      });
+    }
+
     next(error);
   }
 };

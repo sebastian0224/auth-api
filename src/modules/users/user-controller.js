@@ -1,4 +1,5 @@
 import { getUserById, updateUser, deleteUser } from "./user-service.js";
+import { updateProfileSchema } from "./user-validation.js";
 
 export const getProfile = async (req, res, next) => {
   try {
@@ -16,23 +17,28 @@ export const getProfile = async (req, res, next) => {
 
 export const updateProfile = async (req, res, next) => {
   try {
+    const validatedData = updateProfileSchema.parse(req.body);
+
     const userId = req.user.id;
-    const { username, email } = req.body;
-
-    // Aquí irá la validación con Zod después
-    if (!username && !email) {
-      return res.status(400).json({
-        error: "Debes proporcionar al menos un campo para actualizar",
-      });
-    }
-
-    const updatedUser = await updateUser(userId, { username, email });
+    const updatedUser = await updateUser(userId, validatedData);
 
     res.json({
       message: "Perfil actualizado exitosamente",
       data: updatedUser,
     });
   } catch (error) {
+    if (error.name === "ZodError") {
+      const errors = error.issues.map((issue) => ({
+        field: issue.path.join("."),
+        message: issue.message,
+      }));
+
+      return res.status(400).json({
+        error: "Errores de validación",
+        details: errors,
+      });
+    }
+
     next(error);
   }
 };

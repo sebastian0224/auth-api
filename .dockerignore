@@ -1,15 +1,11 @@
-# Dependencias
 node_modules
 npm-debug.log
 yarn-error.log
 
-# Variables de entorno (nunca subirlas a la imagen)
 .env
 
-# Archivos del sistema
 .DS_Store
 *.swp
 
-# Archivos de Docker que no se necesitan dentro de la imagen
 docker-compose.yml
 Dockerfile
