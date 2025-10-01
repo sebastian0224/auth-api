@@ -34,7 +34,7 @@ RESTful API for user authentication and management built with Node.js, Express, 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/auth-api.git
+git clone https://github.com/sebastian0224/auth-api.git
 cd auth-api
 ```
 
